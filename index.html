@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manual de Supervivencia Universitaria</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Spartan:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom styles for Inter font and general page background */
+        body {
+            font-family: 'Montserrat', sans-serif; /* Default font for body */
+            background-color: #f0f4f8; /* Light blue-gray background for the page */
+        }
+
+        /* Font styles for titles and subtitles */
+        h1, h2, h3, .infographic-header h1, .infographic-section-title {
+            font-family: 'Spartan', sans-serif;
+        }
+
+        /* Main manual colors */
+        .main-bg-color {
+            background-color: #1A3A69; /* A dark blue inspired by the manual's header */
+        }
+        .accent-color-text {
+            color: #F2C94C; /* Golden/yellowish orange from the manual's index */
+        }
+        .accent-color-bg {
+            background-color: #F2C94C;
+        }
+        .accent-color-border {
+            border-color: #F2C94C;
+        }
+
+        /* --- Custom styles for the UCV Infographic --- */
+        /* These override/complement the main manual styles for the specific infographic */
+        :root {
+            --ucv-blue-dark: #2C5592; /* Dark blue from the UCV infographic header */
+            --ucv-blue-medium: #3A6EA5; /* Slightly lighter blue for UCV sections */
+            --ucv-yellow: #F7B500; /* Yellow/orange from the UCV circles */
+            --ucv-white: #FFFFFF;
+            --ucv-text-dark: #333333; /* For general text in UCV infographic */
+        }
+
+        /* Base styles for the infographic container */
+        .infographic-container {
+            background-color: var(--ucv-white);
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            width: 100%;
+            max-width: 800px;
+            margin: 20px auto; /* Centering it */
+            color: var(--ucv-text-dark); /* Apply text color to the whole container */
+        }
+
+        .infographic-header { /* Renamed from original 'header' to avoid conflict */
+            background-color: var(--ucv-blue-dark);
+            color: var(--ucv-white);
+            padding: 30px 20px;
+            text-align: center;
+            border-top-left-radius: 15px;
+            border-top-right-radius: 15px;
+            position: relative;
+        }
+
+        .infographic-header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            letter-spacing: 1px;
+        }
+
+        .infographic-logo { /* Renamed from original 'logo' to avoid conflict */
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            width: 80px;
+            height: auto;
+            border-radius: 5px;
+        }
+
+        .infographic-section { /* Renamed from original 'section' to avoid conflict */
+            padding: 30px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .infographic-section:last-child {
+            border-bottom: none;
+        }
+
+        .infographic-section-title { /* Renamed from original 'section-title' to avoid conflict */
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: var(--ucv-blue-medium);
+            margin-bottom: 15px;
+            text-align: center;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .infographic-section-title::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            bottom: 0;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 4px;
+            background-color: var(--ucv-yellow);
+            border-radius: 2px;
+        }
+
+        .infographic-section-content { /* Renamed from original 'section-content' to avoid conflict */
+            font-size: 1.1rem;
+            line-height: 1.7;
+            text-align: justify;
+        }
+
+        .infographic-list-item { /* Renamed from original 'list-item' to avoid conflict */
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 10px;
+        }
+
+        .infographic-list-icon { /* Renamed from original 'list-icon' to avoid conflict */
+            color: var(--ucv-yellow);
+            font-size: 1.5rem;
+            margin-right: 10px;
+            line-height: 1;
+        }
+
+        .infographic-image-container { /* Renamed from original 'image-container' to avoid conflict */
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .infographic-image-container img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .infographic-highlight-box { /* Renamed from original 'highlight-box' */
+            background-color: #fff3e0; /* Light orange/yellow background */
+            border-left: 5px solid var(--ucv-yellow);
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            font-style: italic;
+            color: var(--ucv-text-dark);
+        }
+
+        /* --- General content section handling for JavaScript --- */
+        .content-section {
+            display: none; /* All content sections are hidden by default */
+            margin-top: 2rem; /* Spacing between the index and content */
+            width: 100%; /* Ensure content takes full width of max-w-2xl */
+        }
+        .content-section.active {
+            display: block; /* Only the active section is shown */
+        }
+        
+        #index-container.hidden {
+            display: none;
+        }
+
+        /* Responsive adjustments for infografía */
+        @media (max-width: 768px) {
+            .infographic-header h1 { font-size: 2rem; }
+            .infographic-section-title { font-size: 1.5rem; }
+            .infographic-section-content { font-size: 1rem; }
+            .infographic-section { padding: 20px; }
+            .infographic-logo { width: 60px; top: 15px; left: 15px; }
+        }
+
+        @media (max-width: 480px) {
+            .infographic-header h1 { font-size: 1.8rem; }
+            .infographic-section-title { font-size: 1.3rem; }
+            .infographic-section-content { font-size: 0.95rem; }
+            .infographic-container { margin: 10px auto; border-radius: 10px; }
+            .infographic-logo { width: 50px; top: 10px; left: 10px; }
+        }
+    </style>
+</head>
+<body class="flex flex-col items-center justify-center min-h-screen p-4">
+    <div id="index-container" class="main-bg-color text-white rounded-3xl shadow-2xl p-8 md:p-12 max-w-2xl w-full text-center transform hover:scale-105 transition-transform duration-300 ease-in-out">
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-6 leading-tight">
+            Manual de Supervivencia Universitaria
+        </h1>
+        <p class="text-lg md:text-xl mb-10 opacity-90">
+            Tu guía esencial para navegar la vida universitaria.
+        </p>
+
+        <div class="bg-white text-gray-800 rounded-2xl p-6 md:p-8 shadow-inner">
+            <h2 class="text-2xl md:text-3xl font-bold mb-6 accent-color-text">Índice de Infografías</h2>
+            <ul id="infographic-index" class="space-y-4 text-left text-lg md:text-xl">
+                <li class="p-3 rounded-lg bg-gray-50 hover:bg-blue-50 transition-colors duration-200 cursor-pointer" data-target="ucv-content">
+                    <div class="flex items-center justify-between w-full">
+                        <span class="font-medium">1. Universidad Central de Venezuela</span>
+                        <span class="accent-color-text text-sm md:text-base">Historia y Estructura</span>
+                    </div>
+                </li>
+                <li class="p-3 rounded-lg bg-gray-50 hover:bg-blue-50 transition-colors duration-200 cursor-pointer" data-target="fcjp-content">
+                    <div class="flex items-center justify-between w-full">
+                        <span class="font-medium">2. Facultad de Ciencias Jurídicas y Políticas</span>
+                        <span class="accent-color-text text-sm md:text-base">Organización</span>
+                    </div>
+                </li>
+                <li class="p-3 rounded-lg bg-gray-50 hover:bg-blue-50 transition-colors duration-200 cursor-pointer" data-target="eep-content">
+                    <div class="flex items-center justify-between w-full">
+                        <span class="font-medium">3. Escuela de Estudios Políticos</span>
+                        <span class="accent-color-text text-sm md:text-base">Carrera y Materias</span>
+                    </div>
+                </li>
+                <li class="p-3 rounded-lg bg-gray-50 hover:bg-blue-50 transition-colors duration-200 cursor-pointer" data-target="ederecho-content">
+                    <div class="flex items-center justify-between w-full">
+                        <span class="font-medium">4. Escuela de Derecho</span>
+                        <span class="accent-color-text text-sm md:text-base">Información clave</span>
+                    </div>
+                </li>
+                <li class="p-3 rounded-lg bg-gray-50 hover:bg-blue-50 transition-colors duration-200 cursor-pointer" data-target="comer-content">
+                    <div class="flex items-center justify-between w-full">
+                        <span class="font-medium">5. ¿Dónde comer?</span>
+                        <span class="accent-color-text text-sm md:text-base">Opciones en el campus</span>
+                    </div>
+                </li>
+                <li class="p-3 rounded-lg bg-gray-50 hover:bg-blue-50 transition-colors duration-200 cursor-pointer" data-target="imprimir-content">
+                    <div class="flex items-center justify-between w-full">
+                        <span class="font-medium">6. ¿Dónde imprimir?</span>
+                        <span class="accent-color-text text-sm md:text-base">Servicios disponibles</span>
+                    </div>
+                </li>
+                <li class="p-3 rounded-lg bg-gray-50 hover:bg-blue-50 transition-colors duration-200 cursor-pointer" data-target="centros-estudiantiles-content">
+                    <div class="flex items-center justify-between w-full">
+                        <span class="font-medium">7. CEED y CEEEPA</span>
+                        <span class="accent-color-text text-sm md:text-base">Centros Estudiantiles</span>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <p class="mt-10 text-sm opacity-80">
+            © 2025 Equipo +Estudiantil UCV. Todos los derechos reservados.
+        </p>
+    </div>
+
+    <div id="content-display-area" class="mt-8 mb-8 max-w-2xl w-full">
+        <div id="ucv-content" class="content-section">
+            <div class="infographic-container">
+                <div class="infographic-header">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Logo_UCV.svg/1200px-Logo_UCV.svg.png" alt="UCV Logo" class="infographic-logo">
+                    <h1>Universidad Central de Venezuela</h1>
+                    <p class="font-medium">¡La casa que vence la sombra!</p>
+                </div>
+                <div class="infographic-section">
+                    <h2 class="infographic-section-title">Historia Breve</h2>
+                    <p class="infographic-section-content">
+                        Fundada el 22 de diciembre de 1721 como Real y Pontificia Universidad de Caracas, es la institución de educación superior más antigua de Venezuela. Su actual sede, la Ciudad Universitaria de Caracas, fue diseñada por el arquitecto Carlos Raúl Villanueva y es Patrimonio de la Humanidad por la UNESCO.
+                    </p>
+                </div>
+                <div class="infographic-section">
+                    <h2 class="infographic-section-title">Estructura Académica</h2>
+                    <p class="infographic-section-content">
+                        La UCV está compuesta por **11 Facultades** y **3 Núcleos** (Aragua, Monagas y Táchira), ofreciendo una amplia variedad de carreras en diversas áreas del conocimiento.
+                    </p>
+                    <ul class="mt-4 text-left">
+                        <li class="infographic-list-item"><span class="infographic-list-icon">🎓</span>Arquitectura y Urbanismo</li>
+                        <li class="infographic-list-item"><span class="infographic-list-icon">🔬</span>Ciencias</li>
+                        <li class="infographic-list-item"><span class="infographic-list-icon">⚖️</span>Ciencias Jurídicas y Políticas</li>
+                        <li class="infographic-list-item"><span class="infographic-list-icon">📊</span>Ciencias Económicas y Sociales</li>
+                        <li class="infographic-list-item"><span class="infographic-list-icon">🧑‍⚕️</span>Medicina</li>
+                        <li class="infographic-list-item"><span class="infographic-list-icon">🦷</span>Odontología</li>
+                        <li class="infographic-list-item"><span class="infographic-list-icon">🧪</span>Farmacia</li>
+                        <li class="infographic-list-item"><span class="infographic-list-icon">⚙️</span>Ingeniería</li>
+                        <li class="infographic-list-item"><span class="infographic-list-icon">🌱</span>Agronomía</li>
+                        <li class="infographic-list-item"><span class="infographic-list-icon">🐄</span>Veterinaria</li>
+                        <li class="infographic-list-item"><span class="infographic-list-icon">📚</span>Humanidades y Educación</li>
+                    </ul>
+                </div>
+                <div class="infographic-section">
+                    <h2 class="infographic-section-title">Vida Estudiantil</h2>
+                    <p class="infographic-section-content">
+                        Más allá de lo académico, la UCV es un centro de vida cultural, deportiva y política. Los estudiantes tienen acceso a bibliotecas, comedores, instalaciones deportivas, y una vibrante vida gremial a través de sus centros estudiantiles.
+                    </p>
+                    <div class="infographic-image-container">
+                        <img src="smapse.com/storage/2018/10/baltasar-lobo.jpg" alt="Vista del campus de la Ciudad Universitaria de Caracas con escultura y mural.">
+                    </div>
+                </div>
+                <div class="infographic-section">
+                    <h2 class="infographic-section-title">Patrimonio Cultural</h2>
+                    <p class="infographic-section-content">
+                        La Ciudad Universitaria es una obra maestra de la arquitectura moderna. Sus edificaciones, murales, esculturas y jardines la convierten en un verdadero museo a cielo abierto, diseñado para integrar la vida académica con el arte y la naturaleza.
+                    </p>
+                </div>
+            </div>
+            <div class="text-center mt-6">
+                <button class="return-to-index-btn bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition-colors duration-300">
+                    Regresar al Índice
+                </button>
+            </div>
+        </div>
+
+        <div id="fcjp-content" class="content-section">
+            <div class="infographic-container">
+                <div class="infographic-header">
+                    <img src="https://ucv.edu.ve/fileadmin/user_upload/FCJP/img/LOGO_FCJP_transparente.png" alt="FCJP Logo" class="infographic-logo">
+                    <h1>Facultad de Ciencias Jurídicas y Políticas</h1>
+                    <p class="font-medium">Formando líderes en Derecho y Ciencias Políticas</p>
+                </div>
+
+                <div class="infographic-section">
+                    <h2 class="infographic-section-title">Acerca de la FCJP</h2>
+                    <div class="infographic-section-content">
+                        <p>La Facultad de Ciencias Jurídicas y Políticas (FCJP) de la Universidad Central de Venezuela es una de las facultades más importantes de la UCV, dedicada a la formación de profesionales en las áreas del derecho y las ciencias políticas.</p>
+                        <div class="infographic-image-container">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Facultad_de_Ciencias_Jur%C3%ADdicas_y_Pol%C3%ADticas_UCV.jpg/1280px-Facultad_de_Ciencias_Jur%C3%ADdicas_y_Pol%C3%ADticas_UCV.jpg" alt="Facultad de Ciencias Jurídicas y Políticas UCV">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="infographic-section">
+                    <h2 class="infographic-section-title">Organización de la Facultad</h2>
+                    <div class="infographic-section-content">
+                        <p>La FCJP se organiza en diversas instancias para su gestión académica y administrativa:</p>
+                        <ul class="mt-4 list-disc pl-6">
+                            <li>Consejo de Facultad</li>
+                            <li>Decanato</li>
+                            <li>Consultoría Jurídica</li>
+                            <li>Comisión de Revalidas y Equivalencias</li>
+                            <li>Direcciones de Coordinación y Escuelas</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="infographic-section">
+                    <h2 class="infographic-section-title">Escuelas que la Conforman</h2>
+                    <div class="infographic-section-content">
+                        <p>La FCJP está conformada por dos importantes escuelas:</p>
+                        <ul class="mt-4">
+                            <li class="infographic-list-item"><span class="infographic-list-icon">✓</span> <strong>La Escuela de Estudios Políticos y Administrativos (EEPA)</strong></li>
+                            <li class="infographic-list-item"><span class="infographic-list-icon">✓</span> <strong>La Escuela de Derecho</strong></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center mt-6">
+                <button class="return-to-index-btn bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition-colors duration-300">
+                    Regresar al Índice
+                </button>
+            </div>
+        </div>
+
+        <div id="eep-content" class="content-section">
+            <div class="infographic-container">
+                <div class="infographic-header">
+                    <img src="https://i.ibb.co/L50n119/Dise-o-sin-t-tulo-2.png" alt="EEP Logo" class="infographic-logo"> <h1>Escuela de Estudios Políticos y Administrativos (EEPA)</h1>
+                    <p class="font-medium">Formando profesionales con visión política y administrativa</p>
+                </div>
+
+                <div class="infographic-section">
+                    <h2 class="infographic-section-title">Creación e Inicio de Actividades</h2>
+                    <div class="infographic-section-content">
+                        <p>La creación de una Escuela de Estudios Políticos en la Universidad Central de Venezuela fue propuesta por una comisión del Consejo de la Facultad de Derecho en **1968**. El informe para su creación fue presentado en **1969**.</p>
+                        <p class="mt-4">La Escuela de Estudios Políticos y Administrativos (EEPA) inició formalmente sus actividades docentes en **1973**, y su primera promoción de egresados celebró su graduación en **marzo de 1978**.</p>
+                        <div class="infographic-image-container">
+                            <img src="https://placehold.co/600x350/3A6EA5/FFFFFF?text=Edificio+EEPA" alt="Imagen del edificio de la Escuela de Estudios Políticos y Administrativos.">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="infographic-section">
+                    <h2 class="infographic-section-title">Organización de la EEPA</h2>
+                    <div class="infographic-section-content">
+                        <p>La EEPA se estructura en diversas instancias para su funcionamiento:</p>
+                        <ul class="mt-4 list-disc pl-6">
+                            <li>Consejo de Escuela</li>
+                            <li>Dirección</li>
+                            <li>Subdirección</li>
+                            <li>Departamento de Registro y Control de Estudios</li>
+                            <li>Sala de Profesores</li>
+                            <li>Departamentos</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="infographic-section">
+                    <h2 class="infographic-section-title">Menciones que Ofrece</h2>
+                    <div class="infographic-section-content">
+                        <p>A partir del **7mo semestre**, los estudiantes de la EEPA pueden elegir entre tres menciones especializadas:</p>
+                        <ul class="mt-4">
+                            <li class="infographic-list-item"><span class="infographic-list-icon">★</span> **Politología (POL)**</li>
+                            <li class="infographic-list-item"><span class="infographic-list-icon">★</span> **Administración Pública (APU)**</li>
+                            <li class="infographic-list-item"><span class="infographic-list-icon">★</span> **Relaciones Internacionales (RIN)**</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="infographic-section">
+                    <h2 class="infographic-section-title">Materias de Primer Semestre</h2>
+                    <div class="infographic-section-content">
+                        <p>El ciclo básico de la EEPA comienza con las siguientes cinco materias fundamentales en el primer semestre:</p>
+                        <ul class="mt-4 list-disc pl-6">
+                            <li>Introducción a las Ciencias Sociales</li>
+                            <li>Introducción a las Estructuras Históricas I</li>
+                            <li>Introducción al Derecho</li>
+                            <li>Técnicas de Estudio I</li>
+                            <li>Introducción a la Economía</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="infographic-section">
+                    <h2 class="infographic-section-title">Aspectos Académicos Clave</h2>
+                    <div class="infographic-section-content">
+                        <h3 class="text-xl font-semibold text-ucv-blue-medium mt-6 mb-3">Prelación:</h3>
+                        <p>Es la relación de prioridad entre materias, donde es obligatorio aprobar una materia para poder cursar otra que la "prela". Por ejemplo:</p>
+                        <ul class="list-disc pl-6 mt-2">
+                            <li>Introducción a las Ciencias Sociales prela sobre Introducción a la Teoría General de la Organización, Introducción a la Política y Sociología I.</li>
+                            <li>Introducción a las Estructuras Históricas I prela sobre Introducción a las Estructuras Históricas II.</li>
+                            <li>Introducción al Derecho prela sobre Introducción al Estudio del Estado.</li>
+                            <li>Técnicas de Estudio I prela sobre Técnicas de Estudio II.</li>
+                            <li>Introducción a la Economía prela sobre Economía I.</li>
+                        </ul>
+                        <h3 class="text-xl font-semibold text-ucv-blue-medium mt-6 mb-3">Parciales y Evaluación:</h3>
+                        <p>Los parciales son exámenes que evalúan el contenido parcial de la materia, pudiendo ser orales o escritos. Además de los parciales, los métodos de evaluación incluyen exposiciones, ensayos y monografías.</p>
+                        <h3 class="text-xl font-semibold text-ucv-blue-medium mt-6 mb-3">Preparadurías:</h3>
+                        <p>Son asesorías académicas impartidas por estudiantes (preparadores) debidamente formados. La mayoría de las materias de primer semestre cuentan con esta figura de apoyo.</p>
+                    </div>
+                </div>
+
+                <div class="infographic-section">
+                    <h2 class="infographic-section-title">Vida Estudiantil y Representación</h2>
+                    <div class="infographic-section-content">
+                        <p>La EEPA cuenta con el **Centro de Estudiantes de la Escuela de Estudios Políticos y Administrativos (CEEEPA)**, una organización de gobierno estudiantil. Todos los estudiantes inscritos en la EEPA pueden aspirar a formar parte de este centro, cuyas elecciones deberían realizarse anualmente.</p>
+                        <p class="mt-4">El equipo **Hechos UCV**, fundado en 2012, es un grupo político-estudiantil que apoya académicamente a los "eepistas" y promueve los valores de excelencia académica en la escuela.</p>
+                    </div>
+                </div>
+
+                <div class="infographic-section">
+                    <h2 class="infographic-section-title">Incendio en la EEPA (2021)</h2>
+                    <div class="infographic-section-content">
+                        <p>El **30 de junio de 2021**, la EEPA sufrió un incendio que consumió gran parte de sus instalaciones, afectando principalmente la Sala de Lectura y el Cubículo de Profesores. Este evento resultó en un debilitamiento significativo del techo (aproximadamente 25% consumido), llevando a la prohibición de entrada a la escuela por seguridad.</p>
+                        <div class="infographic-image-container">
+                            <img src="https://placehold.co/600x350/F7B500/FFFFFF?text=Daños+por+Incendio+EEPA" alt="Imagen de los daños causados por el incendio en la EEPA en 2021.">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center mt-6">
+                <button class="return-to-index-btn bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition-colors duration-300">
+                    Regresar al Índice
+                </button>
+            </div>
+        </div>
+
+        <div id="ederecho-content" class="content-section">
+            <div class="infographic-container">
+                <div class="infographic-header">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/e/ea/UCV_-_Facultad_de_Ciencias_Jur%C3%ADdicas_y_Pol%C3%ADticas_%283407986790%29.jpg" alt="Escuela de Derecho Logo" class="infographic-logo">
+                    <h1>Escuela de Derecho</h1>
+                    <p class="font-medium">Cuna de la formación jurídica en Venezuela</p>
+                </div>
+
+                <div class="infographic-section">
+                    <h2 class="infographic-section-title">Historia y Tradición</h2>
+                    <div class="infographic-section-content">
+                        <p>La Escuela de Derecho forma parte de la prestigiosa Facultad de Ciencias Jurídicas y Políticas (FCJP) de la Universidad Central de Venezuela. Sus orígenes se entrelazan con la rica historia de la UCV, fundada en **1721** como la Real y Pontificia Universidad de Caracas.</p>
+                        <p class="mt-4">La Facultad de Ciencias Jurídicas y Políticas, a la cual pertenece la Escuela de Derecho, tiene su creación formal en **1827**, consolidándose como la primera institución de estudios jurídicos y políticos del país.</p>
+                        <div class="infographic-image-container">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Facultad_de_Ciencias_Jur%C3%ADdicas_y_Pol%C3%ADticas_UCV.jpg/1280px-Facultad_de_Ciencias_Jur%C3%ADdicas_y_Pol%C3%ADticas_UCV.jpg" alt="Facultad de Ciencias Jurídicas y Políticas UCV">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="infographic-section">
+                    <h2 class="infographic-section-title">Rol y Relevancia</h2>
+                    <div class="infographic-section-content">
+                        <p>La Escuela de Derecho de la UCV es un pilar fundamental en la formación de profesionales del derecho en Venezuela. Ha jugado un papel determinante en el desarrollo del derecho administrativo y otras ramas jurídicas en el país.</p>
+                        <p class="mt-4">Su misión es formar juristas altamente calificados, capaces de aplicar los instrumentos y técnicas necesarias para un ejercicio profesional eficiente, tanto en el sector público como en el privado, y promover la investigación y publicación en el campo jurídico.</p>
+                    </div>
+                </div>
+
+                <div class="infographic-section">
+                    <h2 class="infographic-section-title">Estructura Académica</h2>
+                    <div class="infographic-section-content">
+                        <h3 class="text-xl font-semibold text-ucv-blue-medium mb-3">Plan de Estudios:</h3>
+                        <p>La carrera de Derecho en la UCV tiene un pensum de estudios de **5 años**, que abarca una amplia gama de disciplinas jurídicas. Algunas de las materias clave incluyen:</p>
+                        <ul class="mt-4 list-disc pl-6">
+                            <li>Derecho Civil (I-IV)</li>
+                            <li>Derecho Constitucional</li>
+                            <li>Introducción al Derecho</li>
+                            <li>Derecho Penal (I-II)</li>
+                            <li>Derecho Administrativo (I-III)</li>
+                            <li>Derecho Procesal Civil (I-II)</li>
+                            <li>Derecho del Trabajo</li>
+                            <li>Derecho Internacional Público y Privado</li>
+                            <li>Filosofía del Derecho</li>
+                            <li>Práctica Jurídica (I-III)</li>
+                            <li>Economía Política y Sociología Jurídica</li>
+                            <li>Derecho Mercantil (I-II)</li>
+                            <li>Criminología</li>
+                            <li>Finanzas Públicas</li>
+                            <li>Derecho Procesal Penal</li>
+                        </ul>
+
+                        <h3 class="text-xl font-semibold text-ucv-blue-medium mt-6 mb-3">Institutos de Investigación:</h3>
+                        <p>La Escuela de Derecho cuenta con el apoyo de institutos especializados que fomentan la investigación y el estudio profundo de áreas específicas del derecho, tales como:</p>
+                        <ul class="mt-4 list-disc pl-6">
+                            <li>Instituto de Derecho Privado</li>
+                            <li>Instituto de Derecho Público</li>
+                            <li>Instituto de Ciencias Penales y Criminológicas</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="infographic-section">
+                    <h2 class="infographic-section-title">Programas de Postgrado</h2>
+                    <div class="infographic-section-content">
+                        <p>La Escuela de Derecho ofrece una sólida oferta de programas de postgrado para la especialización y el desarrollo profesional continuo, incluyendo:</p>
+                        <h3 class="text-lg font-semibold text-ucv-blue-medium mt-4 mb-2">Doctorados:</h3>
+                        <ul class="list-disc pl-6">
+                            <li>Doctorado en Ciencias (mención Derecho)</li>
